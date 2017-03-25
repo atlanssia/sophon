@@ -167,13 +167,13 @@ func (session *session) handleLine(line string) {
 		session.handleQUIT(cmd)
 		return
 
-		case "AUTH":
-			session.handleAUTH(cmd)
-			return
-		
-		case "XCLIENT":
-			session.handleXCLIENT(cmd)
-			return
+	case "AUTH":
+		session.handleAUTH(cmd)
+		return
+
+	case "XCLIENT":
+		session.handleXCLIENT(cmd)
+		return
 
 	}
 

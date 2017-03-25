@@ -1,10 +1,9 @@
-package brynhild
+package mta
 
 import (
-	"brynhild/internal/conf"
 	"crypto/tls"
-	"fmt"
-	log "github.com/Sirupsen/logrus"
+	"github.com/atlanssia/sophon/internal/conf"
+	"log"
 	"net"
 	"net/smtp"
 	"time"
@@ -16,14 +15,6 @@ type server struct {
 	tlsConfig    *tls.Config
 	sessionCount uint
 }
-
-const (
-	// format MaxMessageSize
-	messageSize            string = "250-SIZE %d\r\n"
-	advStartTLS            string = "250-STARTTLS\r\n"
-	pipelining             string = "250-PIPELINING\r\n"
-	advEnhancedStatusCodes string = "250-ENHANCEDSTATUSCODES\r\n"
-)
 
 // new server instance
 func NewServer(conf *conf.Option) (*server, error) {

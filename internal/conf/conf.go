@@ -1,4 +1,4 @@
-package brynhild
+package conf
 
 import (
 	"encoding/json"

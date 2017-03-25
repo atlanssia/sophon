@@ -1,4 +1,4 @@
-package brynhild
+package mta
 
 type envelope struct {
 	sender     string
