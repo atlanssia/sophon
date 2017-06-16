@@ -1,7 +1,6 @@
 package mta
 
 import (
-	"brynhild/internal/conf"
 	"bufio"
 	"bytes"
 	"crypto/tls"
@@ -13,6 +12,7 @@ import (
 	"net/textproto"
 	"strings"
 	"time"
+	"github.com/atlanssia/sophon/internal/conf"
 )
 
 const (
