@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"fmt"
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"io"
 	"io/ioutil"
 	"net"

@@ -3,7 +3,7 @@ package mta
 import (
 	"crypto/tls"
 	"github.com/atlanssia/sophon/internal/conf"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net"
 	"net/smtp"
 	"time"
