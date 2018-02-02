@@ -5,13 +5,14 @@ import (
 	"bytes"
 	"crypto/tls"
 	"fmt"
-	log "github.com/Sirupsen/logrus"
 	"io"
 	"io/ioutil"
+	"log"
 	"net"
 	"net/textproto"
 	"strings"
 	"time"
+
 	"github.com/atlanssia/sophon/internal/conf"
 )
 
@@ -29,7 +30,7 @@ const (
 )
 
 type session struct {
-	sessionId  uint64
+	sessionID  uint64
 	connection net.Conn
 	reader     *bufio.Reader
 	writer     *bufio.Writer
@@ -46,11 +47,11 @@ type command struct {
 }
 
 // new session instance
-func newSession(conn net.Conn, sessionId uint64, option *conf.Option) *session {
+func newSession(conn net.Conn, sessionID uint64, option *conf.Option) *session {
 	reader := bufio.NewReader(conn)
 	writer := bufio.NewWriter(conn)
 	scanner := bufio.NewScanner(conn)
-	instance := &session{sessionId, conn, reader, writer, scanner, option, nil}
+	instance := &session{sessionID, conn, reader, writer, scanner, option, nil}
 	return instance
 }
 
@@ -102,14 +103,14 @@ func (session *session) parseAddress(src string) (string, error) {
 
 func (session *session) handle() {
 	// the welcoming message
-	greeting := fmt.Sprintf("%s - Session id: %d, Time: %s", session.option.Welcoming, session.sessionId, time.Now().Format(time.RFC3339))
+	greeting := fmt.Sprintf("%s - Session id: %d, Time: %s", session.option.Welcoming, session.sessionID, time.Now().Format(time.RFC3339))
 
 	session.sendResponse(220, greeting)
-	log.Debugln("sent greeting...")
+	log.Println("sent greeting...")
 	for {
 		for session.scanner.Scan() {
 			line := session.scanner.Text()
-			log.Debugf("line scanned: %s", line)
+			log.Println("line scanned: %s", line)
 			session.handleLine(line)
 		}
 
@@ -168,11 +169,11 @@ func (session *session) handleLine(line string) {
 		return
 
 	case "AUTH":
-		session.handleAUTH(cmd)
+		// session.handleAUTH(cmd)
 		return
 
 	case "XCLIENT":
-		session.handleXCLIENT(cmd)
+		// session.handleXCLIENT(cmd)
 		return
 
 	}
@@ -279,7 +280,7 @@ func (session *session) handleDATA(cmd command) {
 		return
 	}
 
-	log.Debugln("data go")
+	log.Println("data go")
 	session.sendResponse(354, "Go ahead. End your data with <CR><LF>.<CR><LF>")
 	//session.conn.SetDeadline(time.Now().Add(session.server.DataTimeout))
 

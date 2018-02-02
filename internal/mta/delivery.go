@@ -3,7 +3,6 @@ import (
 	"bufio"
 	"crypto/tls"
 	"fmt"
-	log "github.com/Sirupsen/logrus"
 	"net/smtp"
 	"os"
 	"strings"

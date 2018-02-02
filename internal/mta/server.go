@@ -2,11 +2,12 @@ package mta
 
 import (
 	"crypto/tls"
-	"github.com/atlanssia/sophon/internal/conf"
 	"log"
 	"net"
 	"net/smtp"
 	"time"
+
+	"github.com/atlanssia/sophon/internal/conf"
 )
 
 type server struct {
@@ -18,6 +19,10 @@ type server struct {
 
 // new server instance
 func NewServer(conf *conf.Option) (*server, error) {
+	if !conf.StartTLS {
+		return &server{conf, nil, nil, 0}, nil
+	}
+
 	cert, err := tls.LoadX509KeyPair(conf.PublicKeyFile, conf.PrivateKeyFile)
 	if err != nil {
 		return nil, err
@@ -41,29 +46,28 @@ func (s *server) Start() error {
 	err = s.configTLS()
 	if err != nil {
 		// TODO disable TLS support
-		log.Error(err)
+		log.Println(err)
 	}
 
-	var sessionId uint64
-	sessionId = 0
+	var sessionID uint64
+	sessionID = 0
 	for {
 		conn, err := listener.Accept()
-		sessionId++
+		sessionID++
 		s.sessionCount++ // count active sessions
 
 		if err != nil {
 			if ne, ok := err.(net.Error); ok && ne.Temporary() {
 				time.Sleep(time.Second)
-				log.Error(err, "- will continue")
+				log.Println(err, "- will continue")
 				continue
 			}
 			return err
 		}
 
 		// handle a connection
-		go s.handleSession(conn, sessionId)
+		go s.handleSession(conn, sessionID)
 	}
-	return nil
 }
 
 // TODO signal to shutdown
@@ -72,10 +76,10 @@ func (s *server) Shutdown() error {
 }
 
 // handle a connection (in new goroutine)
-func (s *server) handleSession(conn net.Conn, sessionId uint64) {
+func (s *server) handleSession(conn net.Conn, sessionID uint64) {
 	defer conn.Close()
 
-	session := newSession(conn, sessionId)
+	session := newSession(conn, sessionID, s.option)
 	defer session.close()
 
 	session.handle()

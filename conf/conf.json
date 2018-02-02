@@ -1,0 +1,11 @@
+{
+    "hostname": "change.me.before.start",
+    "listen_interface": "0.0.0.0:25",
+    "start_tls": false,
+    "private_key_file": "",
+    "public_key_file": "",
+    "max_sessions": 100,
+    "max_message_size": 2048000,
+    "log_file": "logs/sophon.log",
+    "welcoming": "SMTP Ready"
+}
