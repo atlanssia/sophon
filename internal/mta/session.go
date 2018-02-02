@@ -5,6 +5,10 @@ import (
 	"bytes"
 	"crypto/tls"
 	"fmt"
+<<<<<<< HEAD
+=======
+	log "github.com/sirupsen/logrus"
+>>>>>>> 01932adf86bdbecbfe2ddce77f4763475ae98360
 	"io"
 	"io/ioutil"
 	"log"
